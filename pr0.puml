@@ -1,0 +1,30 @@
+@startuml
+actor Client
+actor Server
+
+Client -> Server: ClientHello
+note right of Client: Sends supported\nciphers and keys
+Server -> Client: ServerHello
+note left of Server: Chooses cipher and key
+Server -> Client: Certificate
+note left of Server: Server sends its\ncertificate for authentication
+Server -> Client: ServerKeyExchange (optional)
+Server -> Client: CertificateRequest (optional)
+Server -> Client: ServerHelloDone
+
+Client -> Server: Certificate (optional)
+note right of Client: Client provides\nits certificate if\nrequested
+
+Client -> Server: ClientKeyExchange
+note right of Client: Client sends\npre-master secret
+
+Client -> Server: CertificateVerify (optional)
+Client -> Server: ChangeCipherSpec
+Client -> Server: Finished
+
+Server -> Client: ChangeCipherSpec
+Server -> Client: Finished
+
+note over Client, Server: Secure connection established
+
+@enduml
